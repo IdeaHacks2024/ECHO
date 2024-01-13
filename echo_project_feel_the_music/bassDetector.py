@@ -1,6 +1,7 @@
 import pyaudio
 import numpy as np
 from scipy.fft import rfft, rfftfreq
+import requests
 
 # Constants
 CHUNK = 4096  # Number of audio samples per frame
@@ -23,6 +24,7 @@ def analyze_audio(data, y):
     # Analyze the frequency components
     if np.any(np.abs(yf[(xf >= 20) & (xf <= 160)]) > threshold):
         print(y)
+        temp = requests.get(f'http://10.0.0.1/BUZZ')
 
 def main():
     p = pyaudio.PyAudio()
