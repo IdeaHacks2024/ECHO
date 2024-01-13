@@ -7,7 +7,7 @@ CHUNK = 4096  # Number of audio samples per frame
 FORMAT = pyaudio.paInt16  # Audio format (16-bit PCM)
 CHANNELS = 1  # Single channel for microphone
 RATE = 44100  # Sampling rate
-threshold = 500000
+threshold = 90000
 
 
 
@@ -21,7 +21,7 @@ def analyze_audio(data, y):
     xf = rfftfreq(CHUNK, 1 / RATE)
 
     # Analyze the frequency components
-    if np.any(np.abs(yf[(xf >= 20) & (xf <= 160)]) > threshold):
+    if np.any(np.abs(yf[(xf >= 20) & (xf <= 80)]) > threshold):
         print(y)
 
 def main():
