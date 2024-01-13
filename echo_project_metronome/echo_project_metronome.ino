@@ -1,10 +1,10 @@
-const int metronomePin = 3;
+const int motorPin = 1;
 
 int bpm = 120;
 
 void setup() {
   // put your setup code here, to run once:
-  pinMode(metronomePin, OUTPUT);
+  pinMode(motorPin, OUTPUT);
   Serial.begin(9600);
   Serial.println("Enter BPM:");
 }
@@ -24,8 +24,8 @@ void loop() {
 void BPM(int bpmUpdate) {
   bpm = bpmUpdate;
   int delayTime = 30000 / bpm;
-  digitalWrite(metronomePin, HIGH);
+  analogWrite(motorPin, 150);
   delay(delayTime);
-  digitalWrite(metronomePin, HIGH);
+  analogWrite(motorPin, 150);
   delay(delayTime);
 }
