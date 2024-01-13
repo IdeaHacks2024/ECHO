@@ -289,16 +289,16 @@ void num9(){
 }
 
 void dah() {
-  analogWrite(motorPin, 150);
+  digitalWrite(motorPin, HIGH);
   delay(3 * unit);
-  analogWrite(motorPin, 0);
+  digitalWrite(motorPin, LOW);
   delay(1 * unit);
 }
 
 void dit() {
-  analogWrite(motorPin, 150);
+  digitalWrite(motorPin, HIGH);
   delay(1 * unit);
-  analogWrite(motorPin, 0);
+  digitalWrite(motorPin, LOW);
   delay(1 * unit);
 }
 
