@@ -124,7 +124,17 @@ void loop() {
             // the content of the HTTP response follows the header:
             client.print("Click <a href=\"/BUZZ\">here</a> Buzz Mode<br>");
             client.print("Click <a href=\"/METRONOME\">here</a> Metronome Mode<br>");
+            client.print("Set Metronome BPM:");
+            client.print("<a href=\"/METRO60\">60 BPM</a> <br>");
+            client.print("<a href=\"/METRO120\">120 BPM</a> <br>");
+            client.print("<a href=\"/METRO180\">180 BPM</a> <br>");
+            client.print("");
+
             client.print("Click <a href=\"/MORSE\">here</a> Morse Mode<br>");
+            client.print("Set Morse Code Time Unit:");
+            client.print("<a href=\"/MORSEHALF\">0.5 seconds</a> <br>");
+            client.print("<a href=\"/MORSESINGLE\">1 second BPM</a> <br>");
+            client.print("");
             client.print("Click <a href=\"/STOP\">here</a> Stop Mode<br>");
 
             // The HTTP response ends with another blank line:
@@ -143,12 +153,12 @@ void loop() {
           currentLine += c;      // add it to the end of the currentLine
         }
         
-        // raise arm
+        // sets to buzz mode
         if (currentLine.endsWith("GET /BUZZ")) {
             state = 1;
         }
 
-        // lower arm
+        // sets to morse code mode
         if (currentLine.endsWith("GET /MORSE")) {
             state = 2;
 
@@ -166,6 +176,26 @@ void loop() {
 
         if (currentLine.endsWith("GET /STOP")) {
           state = -1;
+        }
+
+        if (currentLine.endsWith("GET /METRO60")){
+          bpm = 60;
+        }
+
+        if (currentLine.endsWith("GET /METRO120")){
+          bpm = 120;
+        }
+        
+        if (currentLine.endsWith("GET /METRO180")){
+          bpm = 180;
+        }
+
+        if (currentLine.endsWith("GET /MORSEHALF")){
+          unit = 500;
+        }
+
+        if (currentLine.endsWith("GET /MORSESINGLE")){
+          unit = 1000;
         }
       }
     }
