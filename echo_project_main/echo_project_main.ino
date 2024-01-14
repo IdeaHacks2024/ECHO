@@ -31,6 +31,7 @@ int state = 0;
 void setup() {
   // put your setup code here, to run once:
   pinMode(motorPin, OUTPUT);
+  pinMode(led, OUTPUT);
   Serial.begin(9600);
   Serial.println("Enter BPM:");
 
@@ -154,8 +155,10 @@ void loop() {
         }
         else if (currentLine.endsWith("GET /BUZZ") && state == 1) {
           digitalWrite(motorPin, HIGH);
+          digitalWrite(led, HIGH);
           delay(100);
           digitalWrite(motorPin, LOW);
+          digitalWrite(led, LOW);
         }
 
         // sets to morse code mode
@@ -266,8 +269,10 @@ void BPM(int bpmUpdate) {
   bpm = bpmUpdate;
   int delayTime = 30000 / bpm;
   digitalWrite(motorPin, HIGH);
+  digitalWrite(led, HIGH);
   delay(delayTime);
   digitalWrite(motorPin, LOW);
+  digitalWrite(led, LOW);
   delay(delayTime);
 }
 
@@ -640,15 +645,19 @@ void num9(){
 
 void dah() {
   digitalWrite(motorPin, HIGH);
+  digitalWrite(led, HIGH);
   delay(3 * unit);
   digitalWrite(motorPin, LOW);
+  digitalWrite(led, LOW);
   delay(1 * unit);
 }
 
 void dit() {
   digitalWrite(motorPin, HIGH);
+  digitalWrite(led, HIGH);
   delay(1 * unit);
   digitalWrite(motorPin, LOW);
+  digitalWrite(led, HIGH);
   delay(1 * unit);
 }
 
