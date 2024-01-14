@@ -3,7 +3,7 @@
 #include <Servo.h>
 
 /////// please enter your sensitive data in the Secret tab/arduino_secrets.h
-char ssid[] = "handler";        // your network SSID (name)
+char ssid[] = "alpha";        // your network SSID (name)
 char pass[] = "password";    // your network password (use for WPA, or use as key for WEP)
 int keyIndex = 0;            // your network key Index number (needed only for WEP)
 
@@ -23,7 +23,7 @@ int status = WL_IDLE_STATUS;
 
 const int motorPin = 3;
 
-int unit = 500;
+int unit = 100;
 int bpm = 120;
 
 int state = 0;
@@ -130,10 +130,10 @@ void loop() {
             client.print("<a href=\"/METRO120\">120 BPM</a> <br>");
             client.print("<a href=\"/METRO180\">180 BPM</a> <br>");
             client.print("<a href=\"/METRO240\">240 BPM</a> <br><br>");
-            client.print("Select <a href=\"/MORSE\">Morse Mode</a> <br>");
+            client.print("Select <a href=\"/MORSE_SET\">Morse Mode</a> <br>");
             client.print("Set Morse Code Time Unit: <br>");
-            client.print("<a href=\"/MORSEHALF\">0.5 seconds</a> <br>");
-            client.print("<a href=\"/MORSESINGLE\">1 second</a> <br><br>");
+            client.print("<a href=\"/MORSEHALF\">0.1 seconds</a> <br>");
+            client.print("<a href=\"/MORSESINGLE\">0.25 second</a> <br><br>");
             client.print("Select <a href=\"/STOP\">Stop Mode</a> <br><br>");
 
             // The HTTP response ends with another blank line:
@@ -158,12 +158,17 @@ void loop() {
         }
 
         // sets to morse code mode
-        if (currentLine.endsWith("GET /MORSE")) {
+        if (currentLine.endsWith("GET /MORSE_SET")) {
+            state = 2;
+            Serial.println(state);
+        }
 
-          String string_to_buzz = currentLine.substring(16, currentLine.length()-6);
+        if (currentLine.endsWith("_MORSE") && state == 2) {
+          Serial.print("\nstt: ");
+          String string_to_buzz = currentLine.substring(5, currentLine.length()-6);
+          string_to_buzz.replace("%20", " ");
           Serial.println(string_to_buzz);
 
-          state = 2;
           convert_morse(string_to_buzz);
 
         }
@@ -199,16 +204,16 @@ void loop() {
         }
 
         if (currentLine.endsWith("GET /MORSEHALF")){
-          unit = 500;
+          unit = 100;
         }
 
         if (currentLine.endsWith("GET /MORSESINGLE")){
-          unit = 1000;
+          unit = 250;
         }
       }
     }
   }
-  Serial.println(state);
+  // Serial.println(state);
 
   if (Serial.available() > 0) {
     int serial_bpm = Serial.parseInt();
@@ -228,9 +233,14 @@ void loop() {
   }
 
   if (state == 2) {
+    // Serial.println("chilling?");
     // String receivedData = Serial.readStringUntil('\n');
     // Serial.println("Received: " + receivedData);
     // convert_morse(receivedData);
+
+    // String string_to_buzz = currentLine.substring(16, currentLine.length()-6);
+    // Serial.println(string_to_buzz);
+    // convert_morse(string_to_buzz);
   }
 
   if (state == -1) {
