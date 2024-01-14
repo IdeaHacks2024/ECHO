@@ -5,17 +5,17 @@
 
 #include <SPI.h>
 #include <WiFiNINA.h>
-#include <Servo.h>
+// #include <Servo.h>
 
 /////// please enter your sensitive data in the Secret tab/arduino_secrets.h
 char ssid[] = "hand";        // your network SSID (name)
 char pass[] = "password";    // your network password (use for WPA, or use as key for WEP)
 int keyIndex = 0;                // your network key Index number (needed only for WEP)
 
-int base_pin = 2;
-int arm_pin = 3;
-Servo base;
-Servo arm;
+// int base_pin = 2;
+int buzz = 3;
+// Servo base;
+// Servo arm;
 int led =  LED_BUILTIN;
 int status = WL_IDLE_STATUS;
 
@@ -29,9 +29,9 @@ WiFiServer server(80);
 
 void setup() {
 
-
   Serial.println("Access Point Web Server");
   pinMode(led, OUTPUT);      // set the LED pin mode
+  pinMode(buzz, OUTPUT);
 
   // check for the WiFi module:
   if (WiFi.status() == WL_NO_MODULE) {
@@ -72,11 +72,11 @@ void setup() {
   // you're connected now, so print out the status
   printWiFiStatus();
 
-  base.attach(base_pin);
-  arm.attach(arm_pin);
+//   base.attach(base_pin);
+//   arm.attach(arm_pin);
 
-  base.write(150);
-  arm.write(55);
+//   base.write(150);
+//   arm.write(55);
 }
 
 void loop() {
@@ -140,7 +140,9 @@ void loop() {
         
         // raise arm
         if (currentLine.endsWith("GET /BUZZ")) {
-            // TODO: BUZZ
+            digitalWrite(buzz, HIGH);
+            delay(100);
+            digitalWrite(buzz, LOW);
         }
 
         // lower arm
