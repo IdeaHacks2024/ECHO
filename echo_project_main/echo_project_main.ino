@@ -10,8 +10,6 @@ int keyIndex = 0;            // your network key Index number (needed only for W
 WiFiServer server(80);
 
 
-
-
 // int base_pin = 2;
 // int arm_pin = 3;
 int led =  LED_BUILTIN;
@@ -161,7 +159,12 @@ void loop() {
 
         // sets to morse code mode
         if (currentLine.endsWith("GET /MORSE")) {
-            state = 2;
+
+          String string_to_buzz = currentLine.substring(16, currentLine.length()-6);
+          Serial.println(string_to_buzz);
+
+          state = 2;
+          convert_morse(string_to_buzz);
 
         }
 
@@ -223,11 +226,13 @@ void loop() {
     Serial.println(bpm);
     BPM(bpm);
   }
+
   if (state == 2) {
-    String receivedData = Serial.readStringUntil('\n');
-    Serial.println("Received: " + receivedData);
-    convert_morse(receivedData);
+    // String receivedData = Serial.readStringUntil('\n');
+    // Serial.println("Received: " + receivedData);
+    // convert_morse(receivedData);
   }
+
   if (state == -1) {
     // close the connection:
     client.stop();

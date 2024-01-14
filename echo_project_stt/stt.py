@@ -1,5 +1,6 @@
 import speech_recognition as sr
 import serial
+import requests
 
 #  for sending strings from python to arduino
 arduino_port = 'COM4'
@@ -69,5 +70,7 @@ while True:
     if result["transcription"] is not None:
         print("You said: {}".format(result["transcription"]))
         data_to_send = format(result["transcription"])
-        ser.write(data_to_send.encode())
+
+        requests.get(f'http://10.0.0.1/{data_to_send}_MORSE')
+        # ser.write(data_to_send.encode())
 
