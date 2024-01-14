@@ -76,11 +76,6 @@ void setup() {
   // you're connected now, so print out the status
   printWiFiStatus();
 
-  // base.attach(base_pin);
-  // arm.attach(arm_pin);
-
-  // base.write(150);
-  // arm.write(55);
 }
 
 void loop() {
@@ -176,10 +171,6 @@ void loop() {
         if (currentLine.endsWith("GET /METRONOME")) {
           // Serial.print(currentLine);
 
-          // String deg_string = currentLine.substring(currentLine.length()-10, currentLine.length()-7);
-          // Serial.print("BPM: ");
-          // Serial.println(deg_string);
-          // int deg = deg_string.toInt();
           state = 3;
         }
 
