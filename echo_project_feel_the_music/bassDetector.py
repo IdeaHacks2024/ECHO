@@ -3,10 +3,10 @@ import numpy as np
 from scipy.fft import rfft, rfftfreq
 import requests
 import time
-from pyfirmata import Arduino
+# from pyfirmata import Arduino
 
 # Constants
-CHUNK = 16384  # Number of audio samples per frame
+CHUNK = 4096  # Number of audio samples per frame
 FORMAT = pyaudio.paInt16  # Audio format (16-bit PCM)
 CHANNELS = 1  # Single channel for microphone
 RATE = 44100  # Sampling rate

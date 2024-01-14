@@ -209,43 +209,43 @@ void loop() {
         }
       }
     }
-  }
-  // Serial.println(state);
+  
+    // Serial.println(state);
 
-  // if (Serial.available() > 0) {
-  //   int serial_bpm = Serial.parseInt();
-  //   if (serial_bpm > 0) {
-  //     bpm = serial_bpm;
-  //     Serial.print("BPM set to: ");
-  //     Serial.println(bpm);
-  //   }
-    
-  //   String receivedData = Serial.readStringUntil('\n');
-  //   Serial.println("Received: " + receivedData);
-  // }
+    // if (Serial.available() > 0) {
+    //   int serial_bpm = Serial.parseInt();
+    //   if (serial_bpm > 0) {
+    //     bpm = serial_bpm;
+    //     Serial.print("BPM set to: ");
+    //     Serial.println(bpm);
+    //   }
+      
+    //   String receivedData = Serial.readStringUntil('\n');
+    //   Serial.println("Received: " + receivedData);
+    // }
 
-  if (state == 3) {
-    Serial.println(bpm);
-    BPM(bpm);
-  }
+    if (state == 3) {
+      Serial.println(bpm);
+      BPM(bpm);
+    }
 
-  if (state == 2) {
-    // Serial.println("chilling?");
-    // String receivedData = Serial.readStringUntil('\n');
-    // Serial.println("Received: " + receivedData);
-    // convert_morse(receivedData);
+    if (state == 2) {
+      // Serial.println("chilling?");
+      // String receivedData = Serial.readStringUntil('\n');
+      // Serial.println("Received: " + receivedData);
+      // convert_morse(receivedData);
 
-    // String string_to_buzz = currentLine.substring(16, currentLine.length()-6);
-    // Serial.println(string_to_buzz);
-    // convert_morse(string_to_buzz);
-  }
+      // String string_to_buzz = currentLine.substring(16, currentLine.length()-6);
+      // Serial.println(string_to_buzz);
+      // convert_morse(string_to_buzz);
+    }
 
-  if (state == -1) {
     // close the connection:
     client.stop();
     Serial.println("client disconnected");
   }
 }
+
 
 void printWiFiStatus() {
   // print the SSID of the network you're attached to:
