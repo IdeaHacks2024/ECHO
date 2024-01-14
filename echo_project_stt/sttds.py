@@ -55,11 +55,14 @@ def main():
 
     try:
         while True:
+            # This is bass detection
             data = stream.read(CHUNK, exception_on_overflow = False)
             analyze_audio(data, y)
-            if recognizer.AcceptWaveform(data):
-                print(recognizer.Result())
             y += 1
+
+            # This is speech to text code
+            # if recognizer.AcceptWaveform(data):
+            #     print(recognizer.Result())
     except KeyboardInterrupt:
         # Graceful exit on Ctrl-C
         pass
