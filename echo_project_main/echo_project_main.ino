@@ -118,7 +118,7 @@ void loop() {
             client.println();
 
             // the content of the HTTP response follows the header:
-            client.print("Select <a href=\"/BUZZ\">Buzz Mode</a> <br><br>");
+            client.print("Select <a href=\"/BUZZ_SET\">Buzz Mode</a> <br><br>");
             client.print("Select <a href=\"/METRONOME\">Metronome Mode</a> <br>");
             client.print("Set Metronome BPM: <br>");
             client.print("<a href=\"/METRO60\">60 BPM</a> <br>");
@@ -147,18 +147,24 @@ void loop() {
           currentLine += c;      // add it to the end of the currentLine
         }
         
+
         // sets to buzz mode
-        if (currentLine.endsWith("GET /BUZZ")) {
+        if (currentLine.endsWith("GET /BUZZ_SET")) {
             state = 1;
+        }
+        else if (currentLine.endsWith("GET /BUZZ") && state == 1) {
+          digitalWrite(motorPin, HIGH);
+          delay(100);
+          digitalWrite(motorPin, LOW);
         }
 
         // sets to morse code mode
-        if (currentLine.endsWith("GET /MORSE_SET")) {
+        else if (currentLine.endsWith("GET /MORSE_SET")) {
             state = 2;
             Serial.println(state);
         }
 
-        if (currentLine.endsWith("_MORSE") && state == 2) {
+        else if (currentLine.endsWith("_MORSE") && state == 2) {
           Serial.print("\nstt: ");
           String string_to_buzz = currentLine.substring(5, currentLine.length()-6);
           string_to_buzz.replace("%20", " ");
@@ -168,37 +174,37 @@ void loop() {
 
         }
 
-        if (currentLine.endsWith("GET /METRONOME")) {
+        else if (currentLine.endsWith("GET /METRONOME")) {
           // Serial.print(currentLine);
 
           state = 3;
         }
 
-        if (currentLine.endsWith("GET /STOP")) {
+        else if (currentLine.endsWith("GET /STOP")) {
           state = -1;
         }
 
-        if (currentLine.endsWith("GET /METRO60")){
+        else if (currentLine.endsWith("GET /METRO60")){
           bpm = 60;
         }
 
-        if (currentLine.endsWith("GET /METRO120")){
+        else if (currentLine.endsWith("GET /METRO120")){
           bpm = 120;
         }
         
-        if (currentLine.endsWith("GET /METRO180")){
+        else if (currentLine.endsWith("GET /METRO180")){
           bpm = 180;
         }
 
-        if (currentLine.endsWith("GET /METRO240")){
+        else if (currentLine.endsWith("GET /METRO240")){
           bpm = 240;
         }
 
-        if (currentLine.endsWith("GET /MORSEHALF")){
+        else if (currentLine.endsWith("GET /MORSEHALF")){
           unit = 100;
         }
 
-        if (currentLine.endsWith("GET /MORSESINGLE")){
+        else if (currentLine.endsWith("GET /MORSESINGLE")){
           unit = 250;
         }
       }
@@ -206,17 +212,17 @@ void loop() {
   }
   // Serial.println(state);
 
-  if (Serial.available() > 0) {
-    int serial_bpm = Serial.parseInt();
-    if (serial_bpm > 0) {
-      bpm = serial_bpm;
-      Serial.print("BPM set to: ");
-      Serial.println(bpm);
-    }
+  // if (Serial.available() > 0) {
+  //   int serial_bpm = Serial.parseInt();
+  //   if (serial_bpm > 0) {
+  //     bpm = serial_bpm;
+  //     Serial.print("BPM set to: ");
+  //     Serial.println(bpm);
+  //   }
     
-    String receivedData = Serial.readStringUntil('\n');
-    Serial.println("Received: " + receivedData);
-  }
+  //   String receivedData = Serial.readStringUntil('\n');
+  //   Serial.println("Received: " + receivedData);
+  // }
 
   if (state == 3) {
     Serial.println(bpm);
