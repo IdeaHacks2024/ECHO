@@ -1,3 +1,4 @@
+// can set output pin to 13 for testing with builtin LED
 const int motorPin = 1;
 
 const int unit = 500;
@@ -9,7 +10,99 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
+  String test = "test";
+  convert_morse(test);
+}
 
+void convert_morse(String audio){
+  for(int i = 0; i < audio.length(); i++){
+    switch (audio[i]){
+      case 'a':
+        a();
+        break;
+      case 'b':
+        b();
+        break;
+      case 'c':
+        c();
+        break;
+      case 'd':
+        d();
+        break;
+      case 'e':
+        e();
+        break;
+      case 'f':
+        f();
+        break;
+      case 'g':
+        g();
+        break;
+      case 'h':
+        h();
+        break;
+      case 'i':
+        letter_i();
+        break;
+      case 'j':
+        j();
+        break;
+      case 'k':
+        k();
+        break;
+      case 'l':
+        l();
+        break;
+      case 'm':
+        m();
+        break;
+      case 'n':
+        n();
+        break;
+      case 'o':
+        o();
+        break;
+      case 'p':
+        p();
+        break;
+      case 'q':
+        q();
+        break;
+      case 'r':
+        r();
+        break;
+      case 's':
+        s();
+        break;
+      case 't':
+        t();
+        break;
+      case 'u':
+        u();
+        break;
+      case 'v':
+        v();
+        break;
+      case 'w':
+        w();
+        break;
+      case 'x':
+        x();
+        break;
+      case 'y':
+        y();
+        break;
+      case 'z':
+        z();
+        break;
+      case ' ':
+        next_word();
+        break;
+      default:
+        break;
+    }
+
+  }
 }
 
 void a() {
@@ -69,7 +162,7 @@ void h() {
   next_letter();
 }
 
-void i(){
+void letter_i(){
   dit();
   dit();
   next_letter();
