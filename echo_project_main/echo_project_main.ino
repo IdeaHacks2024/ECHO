@@ -3,7 +3,7 @@
 #include <Servo.h>
 
 /////// please enter your sensitive data in the Secret tab/arduino_secrets.h
-char ssid[] = "handler";        // your network SSID (name)
+char ssid[] = "alpha";        // your network SSID (name)
 char pass[] = "password";    // your network password (use for WPA, or use as key for WEP)
 int keyIndex = 0;            // your network key Index number (needed only for WEP)
 
@@ -23,7 +23,7 @@ int status = WL_IDLE_STATUS;
 
 const int motorPin = 3;
 
-int unit = 500;
+int unit = 100;
 int bpm = 120;
 
 int state = 0;
@@ -76,11 +76,6 @@ void setup() {
   // you're connected now, so print out the status
   printWiFiStatus();
 
-  // base.attach(base_pin);
-  // arm.attach(arm_pin);
-
-  // base.write(150);
-  // arm.write(55);
 }
 
 void loop() {
@@ -123,17 +118,17 @@ void loop() {
             client.println();
 
             // the content of the HTTP response follows the header:
-            client.print("Select <a href=\"/BUZZ\">Buzz Mode</a> <br><br>");
+            client.print("Select <a href=\"/BUZZ_SET\">Buzz Mode</a> <br><br>");
             client.print("Select <a href=\"/METRONOME\">Metronome Mode</a> <br>");
             client.print("Set Metronome BPM: <br>");
             client.print("<a href=\"/METRO60\">60 BPM</a> <br>");
             client.print("<a href=\"/METRO120\">120 BPM</a> <br>");
             client.print("<a href=\"/METRO180\">180 BPM</a> <br>");
             client.print("<a href=\"/METRO240\">240 BPM</a> <br><br>");
-            client.print("Select <a href=\"/MORSE\">Morse Mode</a> <br>");
+            client.print("Select <a href=\"/MORSE_SET\">Morse Mode</a> <br>");
             client.print("Set Morse Code Time Unit: <br>");
-            client.print("<a href=\"/MORSEHALF\">0.5 seconds</a> <br>");
-            client.print("<a href=\"/MORSESINGLE\">1 second</a> <br><br>");
+            client.print("<a href=\"/MORSEHALF\">0.1 seconds</a> <br>");
+            client.print("<a href=\"/MORSESINGLE\">0.25 second</a> <br><br>");
             client.print("Select <a href=\"/STOP\">Stop Mode</a> <br><br>");
 
             // The HTTP response ends with another blank line:
@@ -152,93 +147,105 @@ void loop() {
           currentLine += c;      // add it to the end of the currentLine
         }
         
+
         // sets to buzz mode
-        if (currentLine.endsWith("GET /BUZZ")) {
+        if (currentLine.endsWith("GET /BUZZ_SET")) {
             state = 1;
+        }
+        else if (currentLine.endsWith("GET /BUZZ") && state == 1) {
+          digitalWrite(motorPin, HIGH);
+          delay(100);
+          digitalWrite(motorPin, LOW);
         }
 
         // sets to morse code mode
-        if (currentLine.endsWith("GET /MORSE")) {
+        else if (currentLine.endsWith("GET /MORSE_SET")) {
+            state = 2;
+            Serial.println(state);
+        }
 
-          String string_to_buzz = currentLine.substring(16, currentLine.length()-6);
+        else if (currentLine.endsWith("_MORSE") && state == 2) {
+          Serial.print("\nstt: ");
+          String string_to_buzz = currentLine.substring(5, currentLine.length()-6);
+          string_to_buzz.replace("%20", " ");
           Serial.println(string_to_buzz);
 
-          state = 2;
           convert_morse(string_to_buzz);
 
         }
 
-        if (currentLine.endsWith("GET /METRONOME")) {
+        else if (currentLine.endsWith("GET /METRONOME")) {
           // Serial.print(currentLine);
 
-          // String deg_string = currentLine.substring(currentLine.length()-10, currentLine.length()-7);
-          // Serial.print("BPM: ");
-          // Serial.println(deg_string);
-          // int deg = deg_string.toInt();
           state = 3;
         }
 
-        if (currentLine.endsWith("GET /STOP")) {
+        else if (currentLine.endsWith("GET /STOP")) {
           state = -1;
         }
 
-        if (currentLine.endsWith("GET /METRO60")){
+        else if (currentLine.endsWith("GET /METRO60")){
           bpm = 60;
         }
 
-        if (currentLine.endsWith("GET /METRO120")){
+        else if (currentLine.endsWith("GET /METRO120")){
           bpm = 120;
         }
         
-        if (currentLine.endsWith("GET /METRO180")){
+        else if (currentLine.endsWith("GET /METRO180")){
           bpm = 180;
         }
 
-        if (currentLine.endsWith("GET /METRO240")){
+        else if (currentLine.endsWith("GET /METRO240")){
           bpm = 240;
         }
 
-        if (currentLine.endsWith("GET /MORSEHALF")){
-          unit = 500;
+        else if (currentLine.endsWith("GET /MORSEHALF")){
+          unit = 100;
         }
 
-        if (currentLine.endsWith("GET /MORSESINGLE")){
-          unit = 1000;
+        else if (currentLine.endsWith("GET /MORSESINGLE")){
+          unit = 250;
         }
       }
     }
-  }
-  Serial.println(state);
+  
+    // Serial.println(state);
 
-  if (Serial.available() > 0) {
-    int serial_bpm = Serial.parseInt();
-    if (serial_bpm > 0) {
-      bpm = serial_bpm;
-      Serial.print("BPM set to: ");
+    // if (Serial.available() > 0) {
+    //   int serial_bpm = Serial.parseInt();
+    //   if (serial_bpm > 0) {
+    //     bpm = serial_bpm;
+    //     Serial.print("BPM set to: ");
+    //     Serial.println(bpm);
+    //   }
+      
+    //   String receivedData = Serial.readStringUntil('\n');
+    //   Serial.println("Received: " + receivedData);
+    // }
+
+    if (state == 3) {
       Serial.println(bpm);
+      BPM(bpm);
     }
-    
-    String receivedData = Serial.readStringUntil('\n');
-    Serial.println("Received: " + receivedData);
-  }
 
-  if (state == 3) {
-    Serial.println(bpm);
-    BPM(bpm);
-  }
+    if (state == 2) {
+      // Serial.println("chilling?");
+      // String receivedData = Serial.readStringUntil('\n');
+      // Serial.println("Received: " + receivedData);
+      // convert_morse(receivedData);
 
-  if (state == 2) {
-    // String receivedData = Serial.readStringUntil('\n');
-    // Serial.println("Received: " + receivedData);
-    // convert_morse(receivedData);
-  }
+      // String string_to_buzz = currentLine.substring(16, currentLine.length()-6);
+      // Serial.println(string_to_buzz);
+      // convert_morse(string_to_buzz);
+    }
 
-  if (state == -1) {
     // close the connection:
     client.stop();
     Serial.println("client disconnected");
   }
 }
+
 
 void printWiFiStatus() {
   // print the SSID of the network you're attached to:
