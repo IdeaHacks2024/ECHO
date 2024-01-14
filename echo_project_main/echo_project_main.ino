@@ -22,7 +22,7 @@ int status = WL_IDLE_STATUS;
 
 const int motorPin = 3;
 
-const int unit = 500;
+int unit = 500;
 int bpm = 120;
 
 int state = 0;
@@ -122,19 +122,18 @@ void loop() {
             client.println();
 
             // the content of the HTTP response follows the header:
-            client.print("Click <a href=\"/BUZZ\">here</a> Buzz Mode<br>");
-            client.print("Click <a href=\"/METRONOME\">here</a> Metronome Mode<br>");
+            client.print("Select <a href=\"/BUZZ\">Buzz Mode</a> <br><br>");
+            client.print("Select <a href=\"/METRONOME\">Metronome Mode</a> <br>");
             client.print("Set Metronome BPM: <br>");
             client.print("<a href=\"/METRO60\">60 BPM</a> <br>");
             client.print("<a href=\"/METRO120\">120 BPM</a> <br>");
-            client.print("<a href=\"/METRO180\">180 BPM</a> <br><br>");
-
-            client.print("Click <a href=\"/MORSE\">here</a> Morse Mode<br>");
+            client.print("<a href=\"/METRO180\">180 BPM</a> <br>");
+            client.print("<a href=\"/METRO240\">240 BPM</a> <br><br>");
+            client.print("Select <a href=\"/MORSE\">Morse Mode</a> <br>");
             client.print("Set Morse Code Time Unit: <br>");
             client.print("<a href=\"/MORSEHALF\">0.5 seconds</a> <br>");
-            client.print("<a href=\"/MORSESINGLE\">1 second</a> <br>");
-            client.print("");
-            client.print("Click <a href=\"/STOP\">here</a> Stop Mode<br> <br>");
+            client.print("<a href=\"/MORSESINGLE\">1 second</a> <br><br>");
+            client.print("Select <a href=\"/STOP\">Stop Mode</a> <br><br>");
 
             // The HTTP response ends with another blank line:
             client.println();
@@ -187,6 +186,10 @@ void loop() {
         
         if (currentLine.endsWith("GET /METRO180")){
           bpm = 180;
+        }
+
+        if (currentLine.endsWith("GET /METRO240")){
+          bpm = 240;
         }
 
         if (currentLine.endsWith("GET /MORSEHALF")){
