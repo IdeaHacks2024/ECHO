@@ -1,4 +1,11 @@
 import speech_recognition as sr
+import serial
+
+#  for sending strings from python to arduino
+arduino_port = 'COM4'
+ser = serial.Serial(arduino_port, 9600, timeout=1)
+data_to_send = " "
+
 
 def recognize_speech_from_mic(recognizer, microphone):
     """Transcribe speech from recorded from `microphone`.
@@ -61,4 +68,6 @@ while True:
 
     if result["transcription"] is not None:
         print("You said: {}".format(result["transcription"]))
+        data_to_send = format(result["transcription"])
+        ser.write(data_to_send.encode())
 

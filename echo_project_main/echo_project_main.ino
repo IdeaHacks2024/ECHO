@@ -9,6 +9,9 @@ int keyIndex = 0;            // your network key Index number (needed only for W
 
 WiFiServer server(80);
 
+
+
+
 // int base_pin = 2;
 // int arm_pin = 3;
 int led =  LED_BUILTIN;
@@ -211,11 +214,19 @@ void loop() {
       Serial.print("BPM set to: ");
       Serial.println(bpm);
     }
+    
+    String receivedData = Serial.readStringUntil('\n');
+    Serial.println("Received: " + receivedData);
   }
 
   if (state == 3) {
     Serial.println(bpm);
     BPM(bpm);
+  }
+  if (state == 2) {
+    String receivedData = Serial.readStringUntil('\n');
+    Serial.println("Received: " + receivedData);
+    convert_morse(receivedData);
   }
   if (state == -1) {
     // close the connection:
@@ -246,6 +257,97 @@ void BPM(int bpmUpdate) {
   delay(delayTime);
   digitalWrite(motorPin, LOW);
   delay(delayTime);
+}
+
+void convert_morse(String audio){
+  for(int i = 0; i < audio.length(); i++){
+    switch (audio[i]){
+      case 'a':
+        a();
+        break;
+      case 'b':
+        b();
+        break;
+      case 'c':
+        c();
+        break;
+      case 'd':
+        d();
+        break;
+      case 'e':
+        e();
+        break;
+      case 'f':
+        f();
+        break;
+      case 'g':
+        g();
+        break;
+      case 'h':
+        h();
+        break;
+      case 'i':
+        letter_i();
+        break;
+      case 'j':
+        j();
+        break;
+      case 'k':
+        k();
+        break;
+      case 'l':
+        l();
+        break;
+      case 'm':
+        m();
+        break;
+      case 'n':
+        n();
+        break;
+      case 'o':
+        o();
+        break;
+      case 'p':
+        p();
+        break;
+      case 'q':
+        q();
+        break;
+      case 'r':
+        r();
+        break;
+      case 's':
+        s();
+        break;
+      case 't':
+        t();
+        break;
+      case 'u':
+        u();
+        break;
+      case 'v':
+        v();
+        break;
+      case 'w':
+        w();
+        break;
+      case 'x':
+        x();
+        break;
+      case 'y':
+        y();
+        break;
+      case 'z':
+        z();
+        break;
+      case ' ':
+        next_word();
+        break;
+      default:
+        break;
+    }
+
+  }
 }
 
 void a() {
@@ -305,7 +407,7 @@ void h() {
   next_letter();
 }
 
-void i(){
+void letter_i(){
   dit();
   dit();
   next_letter();
