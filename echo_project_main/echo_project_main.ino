@@ -124,16 +124,16 @@ void loop() {
             // the content of the HTTP response follows the header:
             client.print("Click <a href=\"/BUZZ\">here</a> Buzz Mode<br>");
             client.print("Click <a href=\"/METRONOME\">here</a> Metronome Mode<br>");
-            client.print("Set Metronome BPM:");
+            client.print("Set Metronome BPM: <br>");
             client.print("<a href=\"/METRO60\">60 BPM</a> <br>");
             client.print("<a href=\"/METRO120\">120 BPM</a> <br>");
             client.print("<a href=\"/METRO180\">180 BPM</a> <br>");
             client.print("");
 
             client.print("Click <a href=\"/MORSE\">here</a> Morse Mode<br>");
-            client.print("Set Morse Code Time Unit:");
+            client.print("Set Morse Code Time Unit: <br>");
             client.print("<a href=\"/MORSEHALF\">0.5 seconds</a> <br>");
-            client.print("<a href=\"/MORSESINGLE\">1 second BPM</a> <br>");
+            client.print("<a href=\"/MORSESINGLE\">1 second</a> <br>");
             client.print("");
             client.print("Click <a href=\"/STOP\">here</a> Stop Mode<br>");
 
