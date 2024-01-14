@@ -224,12 +224,7 @@ void loop() {
     //   Serial.println("Received: " + receivedData);
     // }
 
-    if (state == 3) {
-      Serial.println(bpm);
-      BPM(bpm);
-    }
-
-    if (state == 2) {
+    // if (state == 2) {
       // Serial.println("chilling?");
       // String receivedData = Serial.readStringUntil('\n');
       // Serial.println("Received: " + receivedData);
@@ -238,11 +233,16 @@ void loop() {
       // String string_to_buzz = currentLine.substring(16, currentLine.length()-6);
       // Serial.println(string_to_buzz);
       // convert_morse(string_to_buzz);
-    }
+    // }
 
     // close the connection:
     client.stop();
     Serial.println("client disconnected");
+  }
+
+  if (state == 3) {
+    Serial.println(bpm);
+    BPM(bpm);
   }
 }
 
